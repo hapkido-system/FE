@@ -18,7 +18,8 @@ export default function Login() {
   const [devAccounts, setDevAccounts] = useState<DevAccount[]>([])
 
   useEffect(() => {
-    if (import.meta.env.DEV) api.getDevAccounts().then(setDevAccounts)
+    // shortcut: mock 단계라 배포 환경에도 계정 목록 노출, 실제 인증 연결 시 제거
+    api.getDevAccounts().then(setDevAccounts)
   }, [])
 
   const onSubmit = async (e: FormEvent) => {
@@ -58,7 +59,7 @@ export default function Login() {
 
       {devAccounts.length > 0 && (
         <Card className="mt-4 border-dashed">
-          <p className="mb-2 text-xs font-semibold text-slate-500">개발용 mock 계정 (비밀번호 아무거나)</p>
+          <p className="mb-2 text-xs font-semibold text-slate-500">테스트용 mock 계정 (비밀번호 아무거나)</p>
           <ul className="space-y-1 text-sm">
             {devAccounts.map((a) => (
               <li key={a.email}>

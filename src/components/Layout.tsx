@@ -58,11 +58,10 @@ export default function Layout() {
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-5 text-xs text-slate-500">
           <span>© 광진구합기도협회 (GJHA)</span>
-          {import.meta.env.DEV && (
-            <button onClick={onReset} className="rounded border border-dashed border-slate-300 px-2 py-1 hover:bg-slate-50">
-              개발용: mock 데이터 초기화
-            </button>
-          )}
+          {/* shortcut: mock 단계라 배포 환경에도 노출, 실제 API 연결 시 제거 */}
+          <button onClick={onReset} className="rounded border border-dashed border-slate-300 px-2 py-1 hover:bg-slate-50">
+            테스트용: mock 데이터 초기화
+          </button>
         </div>
       </footer>
     </div>
