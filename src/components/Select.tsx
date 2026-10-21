@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react'
+import { useEffect, useId, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react'
+import { popupStyle, useDismiss } from './popover'
 import { inputCls } from './ui'
 
 export interface SelectOption {
@@ -23,21 +24,17 @@ const LIST_MAX_HEIGHT = 240 // max-h-60
 export function Select({ value, onChange, options, placeholder = '선택하세요', required, className = '', 'aria-label': ariaLabel }: Props) {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(-1)
-  const [up, setUp] = useState(false)
+  const [pos, setPos] = useState<CSSProperties>({})
   const root = useRef<HTMLDivElement>(null)
   const button = useRef<HTMLButtonElement>(null)
   const list = useRef<HTMLUListElement>(null)
   const id = useId()
   const selected = options.find((o) => o.value === value)
 
+  useDismiss(open, () => setOpen(false), root, list)
+
   useEffect(() => {
-    if (!open) return
-    list.current?.focus()
-    const onDown = (e: MouseEvent) => {
-      if (!root.current?.contains(e.target as Node)) setOpen(false)
-    }
-    document.addEventListener('mousedown', onDown)
-    return () => document.removeEventListener('mousedown', onDown)
+    if (open) list.current?.focus()
   }, [open])
 
   useEffect(() => {
@@ -45,10 +42,7 @@ export function Select({ value, onChange, options, placeholder = '선택하세�
   }, [open, active])
 
   const show = () => {
-    // 아래 공간이 부족하고 위가 더 넓으면 위로 펼침
-    const rect = button.current!.getBoundingClientRect()
-    const below = window.innerHeight - rect.bottom
-    setUp(below < LIST_MAX_HEIGHT + 16 && rect.top > below)
+    setPos(popupStyle(button.current!.getBoundingClientRect(), LIST_MAX_HEIGHT))
     setActive(options.findIndex((o) => o.value === value))
     setOpen(true)
   }
@@ -122,9 +116,8 @@ export function Select({ value, onChange, options, placeholder = '선택하세�
           tabIndex={-1}
           aria-activedescendant={active >= 0 ? `${id}-${active}` : undefined}
           onKeyDown={onListKey}
-          className={`absolute left-0 z-20 max-h-60 w-full overflow-y-auto overscroll-contain rounded-lg border border-slate-200 bg-white p-1 shadow-lg outline-none ${
-            up ? 'bottom-full mb-1' : 'top-full mt-1'
-          }`}
+          style={pos}
+          className="z-50 max-h-60 overflow-y-auto overscroll-contain rounded-lg border border-slate-200 bg-white p-1 shadow-lg outline-none"
         >
           {options.length === 0 && <li className="px-3 py-2 text-sm text-slate-400">선택할 항목이 없습니다</li>}
           {options.map((o, i) => {

@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
+import { popupStyle, useDismiss } from './popover'
 import { inputCls } from './ui'
 
 type Mode = 'day' | 'month' | 'year'
@@ -17,7 +18,7 @@ interface Props {
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
 const POPUP_HEIGHT = 340
-const POPUP_WIDTH = 288 // w-72
+const POPUP_WIDTH = 288
 const YEARS_PER_PAGE = 12
 
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -41,8 +42,7 @@ export function DatePicker({
 }: Props) {
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState<Mode>('day')
-  const [up, setUp] = useState(false)
-  const [alignRight, setAlignRight] = useState(false)
+  const [pos, setPos] = useState<CSSProperties>({})
   const [view, setView] = useState({ y: 0, m: 0 })
   const root = useRef<HTMLDivElement>(null)
   const button = useRef<HTMLButtonElement>(null)
@@ -56,20 +56,10 @@ export function DatePicker({
     ;(q('[aria-selected=true]') ?? q('[data-today]:not(:disabled)') ?? q('[data-cell]:not(:disabled)'))?.focus()
   }, [open, mode])
 
-  useEffect(() => {
-    if (!open) return
-    const onDown = (e: MouseEvent) => {
-      if (!root.current?.contains(e.target as Node)) setOpen(false)
-    }
-    document.addEventListener('mousedown', onDown)
-    return () => document.removeEventListener('mousedown', onDown)
-  }, [open])
+  useDismiss(open, () => setOpen(false), root, popup)
 
   const show = () => {
-    const rect = button.current!.getBoundingClientRect()
-    const below = window.innerHeight - rect.bottom
-    setUp(below < POPUP_HEIGHT + 16 && rect.top > below)
-    setAlignRight(rect.left + POPUP_WIDTH > window.innerWidth - 16)
+    setPos(popupStyle(button.current!.getBoundingClientRect(), POPUP_HEIGHT, POPUP_WIDTH))
     const base = value || (max && max < todayStr() ? max : todayStr())
     setView({ y: Number(base.slice(0, 4)), m: Number(base.slice(5, 7)) - 1 })
     setMode(value ? 'day' : startMode)
@@ -228,9 +218,8 @@ export function DatePicker({
               close()
             }
           }}
-          className={`absolute z-20 w-72 rounded-lg border border-slate-200 bg-white p-3 shadow-lg ${up ? 'bottom-full mb-1' : 'top-full mt-1'} ${
-            alignRight ? 'right-0' : 'left-0'
-          }`}
+          style={pos}
+          className="z-50 rounded-lg border border-slate-200 bg-white p-3 shadow-lg"
         >
           <div className="mb-2 flex items-center justify-between gap-1">
             <button type="button" aria-label="이전" disabled={nav.prevOff} onClick={nav.prev} className={navBtn}>
