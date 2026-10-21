@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router'
 import * as api from '../../api'
+import { DatePicker } from '../../components/DatePicker'
 import { Async, Card, Empty, ErrorText, Field, PageTitle, TournamentBadge, btn, inputCls } from '../../components/ui'
 import { TOURNAMENT_STATUSES, TOURNAMENT_STATUS_LABEL, formatDate } from '../../labels'
 import type { Tournament } from '../../types'
@@ -28,9 +29,11 @@ function TournamentForm({ initial, onSave, onCancel }: { initial: api.Tournament
       <Field label="설명"><textarea rows={3} value={form.description} onChange={set('description')} className={inputCls} /></Field>
       <div className="grid gap-3 sm:grid-cols-2">
         <Field label="장소"><input required value={form.location} onChange={set('location')} className={inputCls} /></Field>
-        <Field label="대회일"><input type="date" required value={form.eventDate} onChange={set('eventDate')} className={inputCls} /></Field>
-        <Field label="접수 시작일"><input type="date" required value={form.applyStartAt} onChange={set('applyStartAt')} className={inputCls} /></Field>
-        <Field label="접수 마감일"><input type="date" required value={form.applyEndAt} onChange={set('applyEndAt')} className={inputCls} /></Field>
+        <Field label="대회일"><DatePicker required value={form.eventDate} onChange={(v) => setForm({ ...form, eventDate: v })} /></Field>
+        <Field label="접수 시작일"><DatePicker required value={form.applyStartAt} onChange={(v) => setForm({ ...form, applyStartAt: v })} /></Field>
+        <Field label="접수 마감일">
+          <DatePicker required min={form.applyStartAt || undefined} value={form.applyEndAt} onChange={(v) => setForm({ ...form, applyEndAt: v })} />
+        </Field>
       </div>
       <ErrorText>{error}</ErrorText>
       <div className="flex gap-2">

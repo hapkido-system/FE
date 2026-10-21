@@ -13,8 +13,7 @@
   a[href],
   button,
   summary,
-  [role='button'],
-  input[type='date'] {
+  [role='button'] {
     cursor: pointer;
   }
 

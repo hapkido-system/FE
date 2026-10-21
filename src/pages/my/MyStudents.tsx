@@ -1,13 +1,13 @@
 import { useState, type FormEvent } from 'react'
 import * as api from '../../api'
 import { Async, Card, Empty, ErrorText, PageTitle, Table, btn, inputBase, td } from '../../components/ui'
+import { DatePicker, todayStr } from '../../components/DatePicker'
 import { Select } from '../../components/Select'
 import { DIVISIONS, DIVISION_LABEL, GENDER_LABEL } from '../../labels'
 import type { Division, Gender, Student } from '../../types'
 import { act, useAsync } from '../../useAsync'
 
 const EMPTY: api.StudentInput = { name: '', birthDate: '', gender: '' as Gender, division: '' as Division }
-const today = () => new Date().toISOString().slice(0, 10)
 
 function StudentForm({ initial, onSave, onCancel }: { initial: api.StudentInput; onSave: (v: api.StudentInput) => Promise<unknown>; onCancel?: () => void }) {
   const [form, setForm] = useState(initial)
@@ -28,14 +28,14 @@ function StudentForm({ initial, onSave, onCancel }: { initial: api.StudentInput;
     <form onSubmit={onSubmit} className="space-y-2">
       <div className="flex flex-wrap gap-2">
         <input aria-label="이름" placeholder="이름" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={`${inputBase} w-36`} />
-        <input
-          type="date"
+        <DatePicker
           aria-label="생년월일"
+          placeholder="생년월일"
           required
-          max={today()}
+          max={todayStr()}
           value={form.birthDate}
-          onChange={(e) => setForm({ ...form, birthDate: e.target.value })}
-          className={`${inputBase} w-40 ${form.birthDate ? '' : 'text-slate-400'}`}
+          onChange={(v) => setForm({ ...form, birthDate: v })}
+          className="w-40"
         />
         <Select
           aria-label="성별"
