@@ -9,10 +9,9 @@
 }
 
 @layer base {
-  /* Tailwind v4는 버튼 커서를 default로 두므로 클릭 가능한 요소에 pointer 적용 (radio·checkbox는 기본 커서 유지) */
+  /* Tailwind v4는 버튼 커서를 default로 두므로 클릭 가능한 요소에 pointer 적용 (select·radio·checkbox는 기본 커서 유지) */
   a[href],
   button,
-  select,
   summary,
   [role='button'],
   input[type='date'] {

@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { DIVISIONS, DIVISION_LABEL, GENDER_LABEL } from '../labels'
 import type { Division, Gender, PlayerInput, Student } from '../types'
-import { ErrorText, Field, btn, inputCls } from './ui'
+import { ErrorText, Field, Select, btn, inputCls } from './ui'
 
 interface Props {
   students: Student[]
@@ -61,7 +61,7 @@ export function PlayerForm({ students, appliedStudentIds, initial, submitLabel, 
       {mode === 'student' ? (
         <>
           <Field label="학생">
-            <select value={studentId} onChange={(e) => setStudentId(e.target.value)} className={inputCls}>
+            <Select value={studentId} onChange={(e) => setStudentId(e.target.value)}>
               <option value="">선택하세요</option>
               {students.map((s) => {
                 const applied = appliedStudentIds.has(s.id) && s.id !== initial?.studentId
@@ -71,7 +71,7 @@ export function PlayerForm({ students, appliedStudentIds, initial, submitLabel, 
                   </option>
                 )
               })}
-            </select>
+            </Select>
           </Field>
           {students.length === 0 && <p className="text-sm text-slate-500">등록된 학생이 없습니다. 학생 관리에서 먼저 등록하거나 직접 입력해 주세요.</p>}
           {selected && (
@@ -97,10 +97,10 @@ export function PlayerForm({ students, appliedStudentIds, initial, submitLabel, 
             </div>
           </fieldset>
           <Field label="부별">
-            <select value={division} onChange={(e) => setDivision(e.target.value as Division)} className={inputCls}>
+            <Select value={division} onChange={(e) => setDivision(e.target.value as Division)}>
               <option value="">선택하세요</option>
               {DIVISIONS.map((d) => <option key={d} value={d}>{DIVISION_LABEL[d]}</option>)}
-            </select>
+            </Select>
           </Field>
         </>
       )}
