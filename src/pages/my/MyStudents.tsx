@@ -33,6 +33,7 @@ function StudentForm({ initial, onSave, onCancel }: { initial: api.StudentInput;
           placeholder="생년월일"
           required
           max={todayStr()}
+          startMode="year"
           value={form.birthDate}
           onChange={(v) => setForm({ ...form, birthDate: v })}
           className="w-40"
