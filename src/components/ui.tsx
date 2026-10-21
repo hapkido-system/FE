@@ -23,8 +23,9 @@ export function Field({ label, children }: { label: string; children: ReactNode 
   )
 }
 
-export function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <section className={`rounded-xl border border-slate-200 bg-white p-5 shadow-sm ${className}`}>{children}</section>
+// padded=false: 목록처럼 안쪽 항목이 자체 여백을 갖는 경우
+export function Card({ children, className = '', padded = true }: { children: ReactNode; className?: string; padded?: boolean }) {
+  return <section className={`rounded-xl border border-slate-200 bg-white shadow-sm ${padded ? 'p-5' : 'overflow-hidden'} ${className}`}>{children}</section>
 }
 
 export function PageTitle({ children, action }: { children: ReactNode; action?: ReactNode }) {

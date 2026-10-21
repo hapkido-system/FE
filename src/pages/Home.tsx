@@ -49,7 +49,7 @@ export default function Home() {
 
         <div>
           <h2 className="mb-4 text-lg font-bold">공지사항</h2>
-          <Card className="p-0">
+          <Card padded={false}>
             <Async state={notices}>
               {(list) =>
                 list.length === 0 ? (
@@ -58,7 +58,7 @@ export default function Home() {
                   <ul className="divide-y divide-slate-100">
                     {list.map((n) => (
                       <li key={n.id}>
-                        <Link to={`/notices/${n.id}`} className="block px-5 py-3 hover:bg-slate-50">
+                        <Link to={`/notices/${n.id}`} className="block px-4 py-3 hover:bg-slate-50">
                           <p className="truncate text-sm font-medium text-slate-800">{n.title}</p>
                           <p className="text-xs text-slate-400">{formatDate(n.createdAt)}</p>
                         </Link>
