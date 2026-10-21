@@ -1,0 +1,9 @@
+@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --color-brand: #12285c;
+  --color-brand-dark: #0b1b42;
+  --color-accent: #e3341c;
+}
