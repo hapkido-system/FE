@@ -137,7 +137,7 @@
 |------|------|------|
 | `/my` | 도장 관리 홈 | 아래 메뉴로 이동 |
 | `/my/dojang` | 도장 정보 | 도장명·주소·연락처 조회·수정 |
-| `/my/students` | 학생 관리 | 학생 목록, 등록·수정·삭제 (이름, 성별, 부별) |
+| `/my/students` | 학생 관리 | 학생 목록, 등록·수정·삭제 (이름, 생년월일, 성별, 부별) |
 | `/my/applications` | 대회 신청 내역 | 대회별 신청 선수와 상태(승인 대기·확정·반려), 반려 사유 |
 | `/my/results` | 우리 도장 경기 결과 | 우리 도장 선수의 경기와 최종 순위 |
 
@@ -211,6 +211,7 @@ Student
   id
   dojangId         → Dojang
   name
+  birthDate        YYYY-MM-DD
   gender           MALE | FEMALE
   division         ELEMENTARY | MIDDLE | HIGH
 
