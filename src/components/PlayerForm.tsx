@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import { DIVISIONS, DIVISION_LABEL, GENDER_LABEL } from '../labels'
 import type { Division, Gender, PlayerInput, Student } from '../types'
-import { ErrorText, Field, Select, btn, inputCls } from './ui'
+import { Select } from './Select'
+import { ErrorText, Field, btn, inputCls } from './ui'
 
 interface Props {
   students: Student[]
@@ -61,17 +62,18 @@ export function PlayerForm({ students, appliedStudentIds, initial, submitLabel, 
       {mode === 'student' ? (
         <>
           <Field label="학생">
-            <Select value={studentId} onChange={(e) => setStudentId(e.target.value)}>
-              <option value="">선택하세요</option>
-              {students.map((s) => {
+            <Select
+              value={studentId}
+              onChange={setStudentId}
+              options={students.map((s) => {
                 const applied = appliedStudentIds.has(s.id) && s.id !== initial?.studentId
-                return (
-                  <option key={s.id} value={s.id} disabled={applied}>
-                    {s.name} ({GENDER_LABEL[s.gender]} · {DIVISION_LABEL[s.division]}){applied ? ' - 신청됨' : ''}
-                  </option>
-                )
+                return {
+                  value: s.id,
+                  label: `${s.name} (${GENDER_LABEL[s.gender]} · ${DIVISION_LABEL[s.division]})${applied ? ' - 신청됨' : ''}`,
+                  disabled: applied,
+                }
               })}
-            </Select>
+            />
           </Field>
           {students.length === 0 && <p className="text-sm text-slate-500">등록된 학생이 없습니다. 학생 관리에서 먼저 등록하거나 직접 입력해 주세요.</p>}
           {selected && (
@@ -97,10 +99,11 @@ export function PlayerForm({ students, appliedStudentIds, initial, submitLabel, 
             </div>
           </fieldset>
           <Field label="부별">
-            <Select value={division} onChange={(e) => setDivision(e.target.value as Division)}>
-              <option value="">선택하세요</option>
-              {DIVISIONS.map((d) => <option key={d} value={d}>{DIVISION_LABEL[d]}</option>)}
-            </Select>
+            <Select
+              value={division}
+              onChange={(v) => setDivision(v as Division)}
+              options={DIVISIONS.map((d) => ({ value: d, label: DIVISION_LABEL[d] }))}
+            />
           </Field>
         </>
       )}
