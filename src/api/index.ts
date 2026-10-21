@@ -256,12 +256,15 @@ export const updateMyDojang = (input: DojangInput) =>
     return dojang
   })
 
-export type StudentInput = Pick<Student, 'name' | 'gender' | 'division'>
+export type StudentInput = Pick<Student, 'name' | 'birthDate' | 'gender' | 'division'>
 
 function validStudent(input: StudentInput): StudentInput {
+  const birthDate = required(input.birthDate, '생년월일')
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDate) || Number.isNaN(Date.parse(birthDate))) throw new ApiError('생년월일 형식이 올바르지 않습니다.')
+  if (birthDate > now().slice(0, 10)) throw new ApiError('생년월일은 오늘 이전이어야 합니다.')
   if (!isGender(input.gender)) throw new ApiError('성별을 선택해 주세요.')
   if (!isDivision(input.division)) throw new ApiError('부별을 선택해 주세요.')
-  return { name: required(input.name, '이름'), gender: input.gender, division: input.division }
+  return { name: required(input.name, '이름'), birthDate, gender: input.gender, division: input.division }
 }
 
 function ownStudent(id: string): Student {

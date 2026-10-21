@@ -1,12 +1,13 @@
 import { useState, type FormEvent } from 'react'
 import * as api from '../../api'
-import { Async, Card, Empty, ErrorText, PageTitle, Table, btn, inputCls, td } from '../../components/ui'
+import { Async, Card, Empty, ErrorText, PageTitle, Table, btn, inputBase, td } from '../../components/ui'
 import { Select } from '../../components/Select'
 import { DIVISIONS, DIVISION_LABEL, GENDER_LABEL } from '../../labels'
 import type { Division, Gender, Student } from '../../types'
 import { act, useAsync } from '../../useAsync'
 
-const EMPTY: api.StudentInput = { name: '', gender: '' as Gender, division: '' as Division }
+const EMPTY: api.StudentInput = { name: '', birthDate: '', gender: '' as Gender, division: '' as Division }
+const today = () => new Date().toISOString().slice(0, 10)
 
 function StudentForm({ initial, onSave, onCancel }: { initial: api.StudentInput; onSave: (v: api.StudentInput) => Promise<unknown>; onCancel?: () => void }) {
   const [form, setForm] = useState(initial)
@@ -26,7 +27,16 @@ function StudentForm({ initial, onSave, onCancel }: { initial: api.StudentInput;
   return (
     <form onSubmit={onSubmit} className="space-y-2">
       <div className="flex flex-wrap gap-2">
-        <input aria-label="이름" placeholder="이름" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={`${inputCls} w-36`} />
+        <input aria-label="이름" placeholder="이름" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={`${inputBase} w-36`} />
+        <input
+          type="date"
+          aria-label="생년월일"
+          required
+          max={today()}
+          value={form.birthDate}
+          onChange={(e) => setForm({ ...form, birthDate: e.target.value })}
+          className={`${inputBase} w-40 ${form.birthDate ? '' : 'text-slate-400'}`}
+        />
         <Select
           aria-label="성별"
           placeholder="성별"
@@ -74,13 +84,13 @@ export default function MyStudents() {
             list.length === 0 ? (
               <Empty>등록된 학생이 없습니다.</Empty>
             ) : (
-              <Table head={['이름', '성별', '부별', '']}>
+              <Table head={['이름', '생년월일', '성별', '부별', '']}>
                 {list.map((s) =>
                   editing === s.id ? (
                     <tr key={s.id}>
-                      <td className={td} colSpan={4}>
+                      <td className={td} colSpan={5}>
                         <StudentForm
-                          initial={{ name: s.name, gender: s.gender, division: s.division }}
+                          initial={{ name: s.name, birthDate: s.birthDate ?? '', gender: s.gender, division: s.division }}
                           onSave={async (v) => { await api.updateStudent(s.id, v); setEditing(null); await students.reload() }}
                           onCancel={() => setEditing(null)}
                         />
@@ -89,6 +99,8 @@ export default function MyStudents() {
                   ) : (
                     <tr key={s.id}>
                       <td className={`${td} font-medium`}>{s.name}</td>
+                      {/* 생년월일 추가 전에 저장된 mock 데이터에는 값이 없을 수 있음 */}
+                      <td className={td}>{s.birthDate ?? '-'}</td>
                       <td className={td}>{GENDER_LABEL[s.gender]}</td>
                       <td className={td}>{DIVISION_LABEL[s.division]}</td>
                       <td className={`${td} text-right`}>

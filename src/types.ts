@@ -27,6 +27,7 @@ export interface Student {
   id: string
   dojangId: string
   name: string
+  birthDate: string // YYYY-MM-DD
   gender: Gender
   division: Division
 }

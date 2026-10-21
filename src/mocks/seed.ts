@@ -42,21 +42,26 @@ export function createSeed(): Db {
     { id: 'd-choi', ownerUserId: 'u-choi', name: '중곡합기도', address: '서울 광진구 중곡로 400', phone: '02-444-4444' },
   ]
 
-  const roster: [string, Gender, Division][][] = [
+  const roster: [string, Gender, Division, string][][] = [
     [
-      ['김민준', 'MALE', 'ELEMENTARY'], ['김서연', 'FEMALE', 'ELEMENTARY'], ['김도윤', 'MALE', 'ELEMENTARY'], ['김하은', 'FEMALE', 'ELEMENTARY'],
-      ['김지호', 'MALE', 'MIDDLE'], ['김수아', 'FEMALE', 'MIDDLE'], ['김현우', 'MALE', 'HIGH'], ['김지유', 'FEMALE', 'HIGH'],
+      ['김민준', 'MALE', 'ELEMENTARY', '2015-03-14'], ['김서연', 'FEMALE', 'ELEMENTARY', '2016-07-02'],
+      ['김도윤', 'MALE', 'ELEMENTARY', '2017-11-21'], ['김하은', 'FEMALE', 'ELEMENTARY', '2018-05-09'],
+      ['김지호', 'MALE', 'MIDDLE', '2012-01-30'], ['김수아', 'FEMALE', 'MIDDLE', '2013-08-17'],
+      ['김현우', 'MALE', 'HIGH', '2009-04-05'], ['김지유', 'FEMALE', 'HIGH', '2010-12-11'],
     ],
     [
-      ['박시우', 'MALE', 'ELEMENTARY'], ['박지아', 'FEMALE', 'ELEMENTARY'], ['박예준', 'MALE', 'ELEMENTARY'], ['박채원', 'FEMALE', 'ELEMENTARY'],
-      ['박준서', 'MALE', 'MIDDLE'], ['박윤서', 'FEMALE', 'MIDDLE'], ['박건우', 'MALE', 'HIGH'], ['박다은', 'FEMALE', 'HIGH'],
+      ['박시우', 'MALE', 'ELEMENTARY', '2015-09-23'], ['박지아', 'FEMALE', 'ELEMENTARY', '2016-02-18'],
+      ['박예준', 'MALE', 'ELEMENTARY', '2017-06-27'], ['박채원', 'FEMALE', 'ELEMENTARY', '2018-10-03'],
+      ['박준서', 'MALE', 'MIDDLE', '2012-06-12'], ['박윤서', 'FEMALE', 'MIDDLE', '2013-03-29'],
+      ['박건우', 'MALE', 'HIGH', '2009-10-08'], ['박다은', 'FEMALE', 'HIGH', '2010-07-15'],
     ],
   ]
   const students: Student[] = roster.flatMap((list, d) =>
-    list.map(([name, gender, division], i) => ({
+    list.map(([name, gender, division, birthDate], i) => ({
       id: `s-${d === 0 ? 'kim' : 'park'}-${i + 1}`,
       dojangId: d === 0 ? 'd-kim' : 'd-park',
       name,
+      birthDate,
       gender,
       division,
     })),

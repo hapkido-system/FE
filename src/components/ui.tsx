@@ -9,8 +9,10 @@ export const btn = {
   small: 'inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50',
 }
 
-export const inputCls =
-  'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20'
+// 너비를 직접 지정할 때는 inputBase 사용 (w-full과 함께 쓰면 w-full이 우선됨)
+export const inputBase =
+  'rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20'
+export const inputCls = `w-full ${inputBase}`
 
 export function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
