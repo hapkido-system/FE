@@ -19,6 +19,30 @@
     cursor: pointer;
   }
 
+  /* 얇고 연한 스크롤바 (표준: Firefox·Chrome 121+, webkit: Safari) */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-slate-300) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-slate-300);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-slate-400);
+  }
+
   button:disabled,
   select:disabled,
   input:disabled {

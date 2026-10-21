@@ -5,7 +5,7 @@ export function SectionNav({ title, items }: { title: string; items: [string, st
     <div className="grid gap-6 md:grid-cols-[200px_1fr]">
       <nav className="md:sticky md:top-24 md:self-start">
         <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wide text-slate-400">{title}</p>
-        <ul className="flex gap-1 overflow-x-auto md:flex-col">
+        <ul className="flex gap-1 overflow-x-auto pb-2 md:flex-col md:pb-0">
           {items.map(([to, label]) => (
             <li key={to} className="shrink-0">
               <NavLink
